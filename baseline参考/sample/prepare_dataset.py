@@ -14,6 +14,6 @@ def excel_to_csv(excel_file_path, csv_file_path):
 
 
 if __name__ == "__main__":
-    excel_file = "data/数据字典.xlsx"
-    csv_file = "data/数据字典.csv"
+    excel_file = "../../data/数据字典.xlsx"
+    csv_file = "../../data/数据字典.csv"
     excel_to_csv(excel_file, csv_file)
