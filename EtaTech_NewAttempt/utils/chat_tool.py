@@ -11,9 +11,6 @@ class ChatTool:
     def set_message(self, messages):
         self.messages = messages
 
-    def clear_message(self):
-        self.messages = []
-
     def send_message(self):
         response = self.client.chat.completions.create(
             model=self.model,
