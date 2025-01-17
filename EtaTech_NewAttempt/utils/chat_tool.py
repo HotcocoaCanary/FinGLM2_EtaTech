@@ -11,8 +11,8 @@ class ChatTool:
     def set_message(self, messages):
         self.messages = messages
 
-    def get_message(self):
-        return self.messages
+    def clear_message(self):
+        self.messages = []
 
     def send_message(self):
         response = self.client.chat.completions.create(
@@ -20,4 +20,5 @@ class ChatTool:
             stream=False,
             messages=self.messages
         )
-        return response
+        answer = response.choices[0].message.content
+        return answer

@@ -1,16 +1,16 @@
 import json
 
-from utils.chat_tool import ChatClient
-from utils.db_tool import DatabaseAccessTool
+from 最初版本.utils.chat_tool import ChatClient
+from 最初版本.utils.db_tool import DatabaseAccessTool
 
 # 使用示例
 api_key_air = "2f252bef2ec446719359d4457574fee1.JOfVYlXzamOs2Qwc"
 api_key_zone = "bb39dea715524cce99af3e9e9a5d8be0.tbf9mU4sw3BUnerD"
-access_token = "e904a3cadd95478296e90c6bb954f614"  # 替换为你的Access Token
+access_token = 'df4f19f600214b9da99db3265023df0a'
 db_tool = DatabaseAccessTool(access_token)
 
 
-def get_sql(message, txt_file_path="data/all_tables_schema.txt"):
+def get_sql(message, txt_file_path="../data/all_tables_schema.txt"):
     client = ChatClient(api_key_air, model = "glm-4-air")
     client.clear_messages()
     # 设置更具体的系统提示词

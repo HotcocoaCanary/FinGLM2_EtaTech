@@ -14,16 +14,21 @@ class DBTool:
         response = requests.get(url, headers=self.headers)
         return response.json()
 
-    def execute_sql(self, sql, limit=None):
+    def execute_sql(self, sql, limit=10):
         url = f"{self.base_url}/query"
         data = {
             "sql": sql,
-            "limit": 10
+            "limit": limit
         }
         if limit is not None:
             data["limit"] = limit
         response = requests.post(url, headers=self.headers, json=data)
         response_json = response.json()
-        if 'data' not in response_json:
-            print(response_json)
-        return response_json.get('data', None)
+        return response_json
+
+    def execute_sql_list(self, sql_list):
+        data = []
+        for sql in sql_list:
+            result = self.execute_sql(sql)
+            data.append(result)
+        return data
