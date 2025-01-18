@@ -1,7 +1,9 @@
 import requests
 
+access_token = "4791a677509a49328cc30015b369c7cf"
+
 class DBTool:
-    def __init__(self, access_token):
+    def __init__(self):
         self.base_url = "https://comm.chatglm.cn/finglm2/api"
         self.headers = {
             "Authorization": f"Bearer {access_token}",

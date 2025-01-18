@@ -3,18 +3,14 @@ import os
 
 from EtaTech_NewAttempt.utils.chat_tool import ChatTool
 
-model_air = "glm-4-air"
-api_key_air = '2f252bef2ec446719359d4457574fee1.JOfVYlXzamOs2Qwc'
-model_zero = "glm-zero-preview"
-api_key_zero = "bb39dea715524cce99af3e9e9a5d8be0.tbf9mU4sw3BUnerD"
+# model_air = "glm-4-air"
+# api_key_air = '2f252bef2ec446719359d4457574fee1.JOfVYlXzamOs2Qwc'
+model = "glm-zero-preview"
+api_key = "bb39dea715524cce99af3e9e9a5d8be0.tbf9mU4sw3BUnerD"
+chat = ChatTool(api_key, model)
 
-out_data_base_path = '../out/data/'
-table_description_file = os.path.join(out_data_base_path, "table_description.json")
-table_description = json.load(open(table_description_file, 'r', encoding='utf-8'))
 
-chat = ChatTool(api_key_zero, model_zero)
-
-def get_table_and_schema_list(questions):
+def get_table_and_schema_list(questions, table_description):
     messages = [
         {
             "role": "system",
@@ -47,16 +43,18 @@ def get_table_and_schema_list(questions):
     return select_table_list, select_schema_list
 
 
-def recall_data(team):
+def recall_data(team, table_description_path, data_dict_path):
+    table_description_file = os.path.join(table_description_path)
+    table_description = json.load(open(table_description_file, 'r', encoding='utf-8'))
     questions = ""
     for question_i in team:
         questions+=question_i["question"]
-    table_list, schema_list = get_table_and_schema_list(questions)
+    table_list, schema_list = get_table_and_schema_list(questions, table_description)
     # 获取表详细数据
     table_dict = []
     select_table_description = []
     for schema_list_i in schema_list:
-        data = json.load(open('../out/data/data_dictionary/'+schema_list_i + ".json", 'r', encoding='utf-8'))
+        data = json.load(open(data_dict_path+"/"+schema_list_i + ".json", 'r', encoding='utf-8'))
         table_dict.append(data)
     for table_list_i in table_list:
         for table_description_i in table_description:

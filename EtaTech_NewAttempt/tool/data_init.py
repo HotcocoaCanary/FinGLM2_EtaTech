@@ -4,7 +4,8 @@ import os
 import pandas as pd
 
 
-def data_init(all_tables_schema_file_path, all_tables_schema_file, data_dictionary_path, out_data_base_path):
+def data_init(all_tables_schema_file_path, data_dictionary_path, out_data_base_path):
+    all_tables_schema_file = os.path.join(out_data_base_path, "all_tables_schema.json")
     table_schemas = []
     current_table = None
 
@@ -99,6 +100,7 @@ def data_init(all_tables_schema_file_path, all_tables_schema_file, data_dictiona
     with open(table_description_path, 'w', encoding='utf-8') as f:
         json.dump(table_description, f, ensure_ascii=False, indent=4)
 
+    return table_description_path, data_dict_path
 # if __name__ == "__main__":
 #     all_tables_schema_file_path = '../../data/all_tables_schema.txt'
 #     all_tables_schema_file = '../out/data/all_tables_schema.json'
