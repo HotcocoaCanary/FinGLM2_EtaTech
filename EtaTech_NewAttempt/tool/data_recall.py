@@ -11,6 +11,16 @@ chat = ChatTool(api_key, model)
 
 
 def get_table_and_schema_list(questions, table_description):
+    """
+    根据问题和表描述，获取可能使用到的数据表名称和数据库名称列表。
+
+    参数:
+    questions (str): 问题内容。
+    table_description (list): 表描述信息列表。
+
+    返回:
+    tuple: 包含选中的表名称列表和选中的数据库名称列表。
+    """
     messages = [
         {
             "role": "system",
@@ -25,8 +35,25 @@ def get_table_and_schema_list(questions, table_description):
         }
     ]
     chat.set_message(messages)
-    schema_list = ["USStockDB","PublicFundDB","IndexDB","InstitutionDB","HKStockDB","CreditDB","ConstantDB","AStockShareholderDB","AStockOperationsDB","AStockMarketQuotesDB","AStockIndustryDB","AStockFinanceDB", "AStockEventsDB","AStockBasicInfoDB"]
-    table_list = ["LC_StockArchives","LC_NameChange","LC_Business","LC_ExgIndustry","LC_ExgIndChange","LC_IndustryValuation","LC_IndFinIndicators","LC_COConcept","LC_ConceptList","LC_SuppCustDetail","LC_SHTypeClassifi","LC_MainSHListNew","LC_SHNumber","LC_Mshareholder","LC_ActualController","LC_ShareStru","LC_StockHoldingSt","LC_ShareTransfer","LC_ShareFP","LC_ShareFPSta","LC_Buyback","LC_BuybackAttach","LC_LegalDistribution","LC_NationalStockHoldSt","CS_ForeignHoldingSt","LC_AShareSeasonedNewIssue","LC_ASharePlacement","LC_Dividend","LC_CapitalInvest","CS_StockCapFlowIndex","CS_TurnoverVolTecIndex","CS_StockPatterns","QT_DailyQuote","QT_StockPerformance","LC_SuspendResumption","LC_BalanceSheetAll","LC_IncomeStatementAll","LC_CashFlowStatementAll","LC_IntAssetsDetail","LC_MainOperIncome","LC_OperatingStatus","LC_AuditOpinion","LC_Staff","LC_RewardStat","LC_Warrant","LC_Credit","LC_SuitArbitration","LC_EntrustInv","LC_Regroup","LC_MajorContract","LC_InvestorRa","LC_InvestorDetail","LC_ESOP","LC_ESOPSummary","LC_TransferPlan","LC_SMAttendInfo","HK_EmployeeChange","HK_StockArchives","CS_HKStockPerformance","US_CompanyInfo","US_DailyQuote","MF_FundArchives","MF_FundProdName","MF_InvestAdvisorOutline","MF_Dividend","LC_ViolatiParty","LC_IndexBasicInfo","LC_IndexComponent","LC_InstiArchive","SecuMain","HK_SecuMain","CT_SystemConst","QT_TradingDayNew","LC_AreaCode","PS_EventStru","US_SecuMain","PS_NewsSecurity"]
+    schema_list = ["USStockDB", "PublicFundDB", "IndexDB", "InstitutionDB", "HKStockDB", "CreditDB", "ConstantDB",
+                   "AStockShareholderDB", "AStockOperationsDB", "AStockMarketQuotesDB", "AStockIndustryDB",
+                   "AStockFinanceDB", "AStockEventsDB", "AStockBasicInfoDB"]
+    table_list = ["LC_StockArchives", "LC_NameChange", "LC_Business", "LC_ExgIndustry", "LC_ExgIndChange",
+                  "LC_IndustryValuation", "LC_IndFinIndicators", "LC_COConcept", "LC_ConceptList", "LC_SuppCustDetail",
+                  "LC_SHTypeClassifi", "LC_MainSHListNew", "LC_SHNumber", "LC_Mshareholder", "LC_ActualController",
+                  "LC_ShareStru", "LC_StockHoldingSt", "LC_ShareTransfer", "LC_ShareFP", "LC_ShareFPSta", "LC_Buyback",
+                  "LC_BuybackAttach", "LC_LegalDistribution", "LC_NationalStockHoldSt", "CS_ForeignHoldingSt",
+                  "LC_AShareSeasonedNewIssue", "LC_ASharePlacement", "LC_Dividend", "LC_CapitalInvest",
+                  "CS_StockCapFlowIndex", "CS_TurnoverVolTecIndex", "CS_StockPatterns", "QT_DailyQuote",
+                  "QT_StockPerformance", "LC_SuspendResumption", "LC_BalanceSheetAll", "LC_IncomeStatementAll",
+                  "LC_CashFlowStatementAll", "LC_IntAssetsDetail", "LC_MainOperIncome", "LC_OperatingStatus",
+                  "LC_AuditOpinion", "LC_Staff", "LC_RewardStat", "LC_Warrant", "LC_Credit", "LC_SuitArbitration",
+                  "LC_EntrustInv", "LC_Regroup", "LC_MajorContract", "LC_InvestorRa", "LC_InvestorDetail", "LC_ESOP",
+                  "LC_ESOPSummary", "LC_TransferPlan", "LC_SMAttendInfo", "HK_EmployeeChange", "HK_StockArchives",
+                  "CS_HKStockPerformance", "US_CompanyInfo", "US_DailyQuote", "MF_FundArchives", "MF_FundProdName",
+                  "MF_InvestAdvisorOutline", "MF_Dividend", "LC_ViolatiParty", "LC_IndexBasicInfo", "LC_IndexComponent",
+                  "LC_InstiArchive", "SecuMain", "HK_SecuMain", "CT_SystemConst", "QT_TradingDayNew", "LC_AreaCode",
+                  "PS_EventStru", "US_SecuMain", "PS_NewsSecurity"]
     select_table_answer = chat.send_message()
     select_table_list = []
     select_schema_list = []
@@ -44,17 +71,28 @@ def get_table_and_schema_list(questions, table_description):
 
 
 def recall_data(team, table_description_path, data_dict_path):
+    """
+    根据团队问题和表描述路径，获取相关的表详细数据和问题内容。
+
+    参数:
+    team (list): 问题列表。
+    table_description_path (str): 表描述文件路径。
+    data_dict_path (str): 数据字典路径。
+
+    返回:
+    tuple: 包含选中的表描述信息列表、表详细数据列表和问题内容。
+    """
     table_description_file = os.path.join(table_description_path)
     table_description = json.load(open(table_description_file, 'r', encoding='utf-8'))
     questions = ""
     for question_i in team:
-        questions+=question_i["question"]
+        questions += question_i["question"]
     table_list, schema_list = get_table_and_schema_list(questions, table_description)
     # 获取表详细数据
     table_dict = []
     select_table_description = []
     for schema_list_i in schema_list:
-        data = json.load(open(data_dict_path+"/"+schema_list_i + ".json", 'r', encoding='utf-8'))
+        data = json.load(open(data_dict_path + "/" + schema_list_i + ".json", 'r', encoding='utf-8'))
         table_dict.append(data)
     for table_list_i in table_list:
         for table_description_i in table_description:
