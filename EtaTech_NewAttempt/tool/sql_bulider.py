@@ -37,14 +37,14 @@ def get_sql_list(select_table_description, table_dict, questions, known):
 
 def execute_sql_and_check(sql_list, select_table_description, table_dict, questions):
     known = []
-    cheak = 0
+    check = 0
     for sql in sql_list:
         result = DBTool().execute_sql(sql["sql"])
         print(result)
         known.append(result)
         if 'success' not in result:
-            cheak += 1
-    if cheak >= len(sql_list) / 2:
+            check += 1
+    if check >= len(sql_list) / 2:
         sql_list = get_sql_list(select_table_description, table_dict, questions, known)
         return execute_sql_and_check(sql_list, select_table_description, table_dict, questions)
     return known
