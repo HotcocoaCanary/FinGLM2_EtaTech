@@ -3,14 +3,10 @@ import os
 
 from EtaTech_NewAttempt.utils.chat_tool import ChatTool
 
-access_token = 'df4f19f600214b9da99db3265023df0a'
 model_air = "glm-4-air"
 api_key_air = '2f252bef2ec446719359d4457574fee1.JOfVYlXzamOs2Qwc'
 model_zero = "glm-zero-preview"
 api_key_zero = "bb39dea715524cce99af3e9e9a5d8be0.tbf9mU4sw3BUnerD"
-
-# question_data_path = r'../../data/question.json'
-question_data_path = r'../../data/question_test.json'
 
 out_data_base_path = '../out/data/'
 table_description_file = os.path.join(out_data_base_path, "table_description.json")
@@ -41,22 +37,30 @@ def get_table_and_schema_list(questions):
     for table in table_list:
         if table in select_table_answer or table.lower() in select_table_answer:
             select_table_list.append(table)
+    for table_description_i in table_description:
+        for table in select_table_list:
+            if table_description_i["表名"] == table and table_description_i["数据库名"] not in select_schema_list:
+                select_schema_list.append(table_description_i["数据库名"])
     for schema in schema_list:
         if schema in select_table_answer or schema.lower() in select_table_answer:
             select_schema_list.append(schema)
     return select_table_list, select_schema_list
 
 
-def get_question_sql(team):
+def recall_data(team):
     questions = ""
     for question_i in team:
         questions+=question_i["question"]
     table_list, schema_list = get_table_and_schema_list(questions)
-    print(table_list)
-    print(schema_list)
-    # TODO: 根据table_list和schema_list生成sql
-
-if __name__ == '__main__':
-    question_data = json.load(open(question_data_path, 'r', encoding='utf-8'))
-    for i in question_data:
-        get_question_sql(i["team"])
+    # 获取表详细数据
+    table_dict = []
+    select_table_description = []
+    for schema_list_i in schema_list:
+        data = json.load(open('../out/data/data_dictionary/'+schema_list_i + ".json", 'r', encoding='utf-8'))
+        table_dict.append(data)
+    for table_list_i in table_list:
+        for table_description_i in table_description:
+            if table_description_i["表名"] == table_list_i:
+                select_table_description.append(table_description_i)
+    # 根据table_list和schema_list生成sql
+    return select_table_description, table_dict, questions

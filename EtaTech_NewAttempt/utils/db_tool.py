@@ -25,10 +25,3 @@ class DBTool:
         response = requests.post(url, headers=self.headers, json=data)
         response_json = response.json()
         return response_json
-
-    def execute_sql_list(self, sql_list):
-        data = []
-        for sql in sql_list:
-            result = self.execute_sql(sql)
-            data.append(result)
-        return data
