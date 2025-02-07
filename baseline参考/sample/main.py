@@ -55,7 +55,7 @@ def process_task_with_llm(task, api_key, model, thread_id):
 
 def main():
     input = "data/question_en.json"
-    output = "out/EtaTech_result.json"
+    output = "out/EtaTech_result_A.json"
     access_token = 'e904a3cadd95478296e90c6bb954f614'
     model = "glm-4-air"
     api_key = '2f252bef2ec446719359d4457574fee1.JOfVYlXzamOs2Qwc'
