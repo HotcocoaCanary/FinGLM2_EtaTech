@@ -6,7 +6,7 @@ from 最初版本.utils.db_tool import DatabaseAccessTool
 # 使用示例
 api_key_air = "2f252bef2ec446719359d4457574fee1.JOfVYlXzamOs2Qwc"
 api_key_zone = "bb39dea715524cce99af3e9e9a5d8be0.tbf9mU4sw3BUnerD"
-access_token = 'df4f19f600214b9da99db3265023df0a'
+access_token = '64607cac81ec4d69a37f275d75dc37dc'
 db_tool = DatabaseAccessTool(access_token)
 
 

@@ -1,6 +1,6 @@
 import json
 
-from utils.answer_tool import get_answer
+from 最初版本.utils.answer_tool import get_answer
 
 
 def process_questions(input_filename, output_filename):
